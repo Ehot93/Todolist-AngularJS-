@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html ng-app="planyway">
+<head>
+	<meta charset="UTF-8">
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.5/angular.min.js"></script>
+	<script src="app.js"></script>
+	<title>Planyway</title>
+</head>
+<body ng-controller="first">
+<h1>add tasks</h1>
+	<form>
+		<p>Enter date </p>
+		<input type="date" ng-model="temptime"><br>
+		<br><select name="1" id="1" ng-model="tempproject">
+			<option value="Planyway">Planyway</option>
+			<option value="Ruboid">Ruboid</option>
+			<option value="Hello world">Hello world</option>
+		</select>
+		<p>Enter your commit</p>
+		<input type="text" ng-model="tempcommit"><br>
+		<br><button ng-click="addnew()">Add</button>
+	</form>
+	<div>
+		<!--<p ng-repeat="task in tasksarray">{{task}}<button ng-click="deleteitem(task)">Delete</button></p>-->
+		<hr>
+		<p ng-repeat="tasks in tasksarray">{{tasksarray}}<br><button ng-click="deleteitem(task)">Delete</button></p></p><br>
+	</div>
+</body>
+</html>

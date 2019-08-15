@@ -1,0 +1,138 @@
+<!doctype html>
+<html ng-app="planyWay">
+  <head>
+    <title>Planyway2</title>
+    <meta charset="utf-8">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+<script type='text/javascript'>
+	var app = angular.module("planyWay", []);
+	app.filter("startFrom", function(){
+		return function(input, start){
+			start =+ start;
+			return input.slice(start);
+		}
+	})//!!! разбить скрипт по файлам, доработать интерфейс, доделать кроссбраузерность, добавить редактирование записей, доделать фильтры и сортировки
+.controller("UserListCtrl", function ($scope) { //controller
+	$scope.users = [];
+	var local = JSON.parse(localStorage.getItem("info"));
+	if(local){
+		$scope.users = local;;
+	}
+	else(alert("localStorage is empty"));
+	$scope.orderProp = "count";//сортировка модели по порядку при открытии страницы
+	$scope.currentPage = 0;
+	$scope.pageSize = 5;
+	$scope.numberOfPages = function(){
+		return Math.ceil($scope.users.length/$scope.pageSize); //ceil округляет значение в скобках ближе к большему целому
+	}
+	$scope.ordering = function(Project){// функция сортировки модели 
+		$scope.orderProp = Project; //orderProp возвращает отсортированный массив
+	};
+	$scope.remove = function(item){//удаление объекта из модели
+		var index = $scope.users.indexOf(item)
+		$scope.users.splice(index, 1)
+		localStorage.setItem("info", JSON.stringify($scope.users));// перезапись хранилища, без удаленного поля
+	};
+	$scope.addUser = function(){//добавление элемента в модель
+		if ($scope.addDate && $scope.addCommit && $scope.addProject){
+		$scope.users.push({
+			commit:$scope.addCommit,
+			date:$scope.addDate,
+			project:$scope.addProject
+		});
+			localStorage.setItem("info", JSON.stringify($scope.users));// преобразование массива в строку json и запись в хранилище
+			var restoredSession = JSON.parse(localStorage.getItem("info"));// парсинг обратно в object
+			console.log(restoredSession);
+	}
+		else{alert("bad idea, enter info")}
+		$scope.addName = '';// очистка полей после добавления
+		$scope.addPhone = '';
+		$scope.addCommit = '';
+		$scope.addDate = '';
+	}; 
+});
+function startFrom(){
+		return function(input, start){
+			start =+ start;
+			return input.slice(start);
+		}
+	} 
+</script>
+  </head>
+  <style>
+  @import url('https://fonts.googleapis.com/css?family=Roboto');
+   body{
+		font-family: Roboto;
+	}
+  th.change{
+	cursor:pointer;
+	color:blue;
+  }
+   th.change:hover{
+	text-decoration:underline;
+  }
+  .container{
+	width:900px;
+	margin:0 auto;
+  }
+  </style>
+<body ng-controller='UserListCtrl'>
+<div>
+	<div class="container">
+		<div class="row">
+			<div class="col-md-12">
+				<table class="table table-bordered">
+				   <th class="change" ng-click="ordering('article')">
+					По номеру
+				  </th>
+				  <th class="change" ng-click="ordering('project')">
+					По проекту
+				  </th>
+				  <th class="change" ng-click="ordering('date')" >
+					По дате
+				  </th>
+				  <th class="change" ng-click="ordering('commit')">
+				  	По комменту
+				  </th>
+				  <th>
+					Всего пользователей:{{users.length}}
+				  </th>
+				  <tr ng-repeat="user in users | startFrom:currentPage*pageSize | limitTo:pageSize  | orderBy:orderProp track by $index">
+						<td>{{$index+1}}</td>
+						<td>{{user.project}}</td>
+						<td>{{user.date}}</td>
+						<td>{{user.commit}}</td>
+						<td><input value="Удалить" type="button" ng-click="remove($index)" class="btn btn-default"></td>
+				  </tr>		
+				</table>
+				<div class="col-md-12">
+					<form ng-submit="addUser()" class="form-inline">
+					  <div class="form-group">
+					  	<input type="date" id="datepicker" name="input" ng-model="addDate" placeholder="yyyy-MM-dd" min="2017-09-01" max="" />
+					  </div>
+					  <div class="form-group">
+					  	<select name="option" class="form-control" ng-model="addProject" placeholder="chose project">
+						<option value="Planyway">Planyway</option>
+						<option value="Ruboid">Ruboid</option>
+						<option value="Hello world">Hello world</option>
+						</select>
+					  </div>
+					  <div class="form-group">
+						<textarea ng-model="addCommit" class="form-control" id="exampleInputEmail3" placeholder="Введите ваш комментарий"></textarea>
+					  </div>
+					  <button type="submit" class="btn btn-default">Добавить</button>
+					</form>
+					<div class="text-center">
+					 <button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1" class="btn btn-default">Previous</button>
+					  {{currentPage+1}}/{{numberOfPages()}}
+					  <button ng-disabled="currentPage >= users.length/pageSize - 1" ng-click="currentPage=currentPage+1" class="btn btn-default">Next</button>
+					  </div>
+				</div>
+			</div>	
+		</div>
+	</div>	
+
+</div>
+</body>
+</html>
