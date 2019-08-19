@@ -7,60 +7,6 @@
 	<link rel="stylesheet" href="style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
     <script src="app-prod.js"></script>
-<script type='text/javascript'>
-	var app = angular.module("planyWay", []);
-	app.filter("startFrom", function(){
-		return function(input, start){
-			start =+ start;
-			return input.slice(start);
-		}
-	})
-.controller("UserListCtrl", function ($scope) {
-	$scope.users = [];
-	var local = JSON.parse(localStorage.getItem("info"));
-	if(local){
-		$scope.users = local;;
-	}
-	else(alert("localStorage is empty"));
-	$scope.orderProp = "count";
-	$scope.currentPage = 0;
-	$scope.pageSize = 5;
-	$scope.numberOfPages = function(){
-		return Math.ceil($scope.users.length/$scope.pageSize); 
-	}
-	$scope.ordering = function(Project){
-		$scope.orderProp = Project; 
-	};
-	$scope.remove = function(item){
-		var index = $scope.users.indexOf(item)
-		$scope.users.splice(index, 1)
-		localStorage.setItem("info", JSON.stringify($scope.users));
-	};
-	$scope.addUser = function(){
-		if ($scope.addDate && $scope.addCommit && $scope.addProject){
-		$scope.users.push({
-			commit:$scope.addCommit,
-			date:$scope.addDate,
-			project:$scope.addProject
-		});
-			localStorage.setItem("info", JSON.stringify($scope.users));
-			var restoredSession = JSON.parse(localStorage.getItem("info"));
-			console.log(restoredSession);
-	}
-		else{alert("bad idea, enter info")}
-		$scope.addName = '';
-		$scope.addPhone = '';
-		$scope.addCommit = '';
-		$scope.addDate = '';
-	}; 
-});
-function startFrom(){
-		return function(input, start){
-			start =+ start;
-			return input.slice(start);
-		}
-	} 
-</script>
   </head>
 <body ng-controller='UserListCtrl'>
 <div>
