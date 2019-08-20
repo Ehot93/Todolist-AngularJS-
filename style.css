@@ -13,3 +13,27 @@
 	width:900px;
 	margin:0 auto;
   }
+  form.form-inline.ng-valid
+   {
+    text-align: center;
+    padding-bottom: 10px;
+}
+#exampleInputEmail3{
+	height: 40px;
+    min-width: 225px;
+}
+.form-inline.ng-pristine.ng-valid .form-group {
+    height:40px
+}
+.form-group .form-control.ng-valid,
+ .form-group button.btn.btn-default, .form-group #datepicker{
+ 	height:40px;
+ 	border-radius: 5px;
+ }
+ form.form-inline.ng-valid button.btn.btn-default {
+    height: 40px;
+}
+th.change,th.ng-binding,
+td.ng-binding,.ng-scope td {
+    text-align: center;
+}

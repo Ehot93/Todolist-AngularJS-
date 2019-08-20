@@ -4,19 +4,26 @@ var app = angular.module("planyWay", []);
 			start =+ start;
 			return input.slice(start);
 		}
-	})//!!! разбить скрипт по файлам, доработать интерфейс, доделать кроссбраузерность, добавить редактирование записей, доделать фильтры и сортировки
+	})/*
+	-1) разбить скрипт по файлам
+	2) доработать интерфейс
+	3) доделать фильтры и сортировки
+	4) добавить редактирование записей
+	5)  доделать кроссбраузерность
+	*/
 .controller("UserListCtrl", function ($scope) { //controller
 	$scope.users = [];
 	var local = JSON.parse(localStorage.getItem("info"));
 	if(local){
-		$scope.users = local;;
+		$scope.users = local;
 	}
 	else(alert("localStorage is empty"));
 	$scope.orderProp = "count";//сортировка модели по порядку при открытии страницы
 	$scope.currentPage = 0;
 	$scope.pageSize = 5;
 	$scope.numberOfPages = function(){
-		return Math.ceil($scope.users.length/$scope.pageSize); //ceil округляет значение в скобках ближе к большему целому
+		let numbPages = Math.ceil($scope.users.length/$scope.pageSize)==0 ? 1 : Math.ceil($scope.users.length/$scope.pageSize);//ceil округляет значение в скобках ближе к большему целому
+		return numbPages;
 	}
 	$scope.ordering = function(Project){// функция сортировки модели 
 		$scope.orderProp = Project; //orderProp возвращает отсортированный массив
