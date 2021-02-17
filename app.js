@@ -36,7 +36,6 @@ angular.module("planyway",[])
 	//функция удаления данных
 	$scope.deleteitem = function(item){
 			var index = $scope.tasksarray.indexOf(item);
-			//console.log(index); //проверка индекса
 			$scope.tasksarray.splice(index, 1);
 	}
 })
